@@ -1,0 +1,17 @@
+{
+    "name": "Pools",
+    "rootNamespace": "",
+    "references": [
+        "GUID:8f6e6ae3770c5ec48aec3ed639dd661e",
+        "GUID:065f067dcda89ea48adbb5afc67f2a21"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
