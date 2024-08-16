@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using LGrid;
+using PoolSystem.Alternative;
 using SevenBoldPencil.EasyEvents;
 using UnityEngine;
 
@@ -25,22 +27,20 @@ namespace Game
 
         private void SetupObject(in ESetup setup)
         {
+            GameObject mark = null;
             var go = setup.Mark;
             var position = setup.Position;
             if (_cMarkFilter.TryGetFirst(out var marksPools))
             {
-                switch (go.Type)
+                mark = go.Type switch
                 {
-                    case Marks.X:
-                        marksPools.XPool.GetFromPool(position);
-                        break;
-                    case Marks.O:
-                        marksPools.OPool.GetFromPool(position);
-                        break;
-                }
+                    Marks.X => marksPools.XPool.GetFromPool(position).gameObject,
+                    Marks.O => marksPools.OPool.GetFromPool(position).gameObject,
+                    _ => mark
+                };
             }
             var cell = _map.Value.CreateCell(Vector3Int.RoundToInt(position), go);
-            _bus.Value.NewEvent(new EOnMarkSetup(cell, go.Type));
+            _bus.Value.NewEvent(new EOnMarkSetup(cell, go.Type, mark));
         }
     }
 }

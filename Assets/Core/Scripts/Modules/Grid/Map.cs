@@ -46,6 +46,15 @@ namespace LGrid
             cell = null;
             return Cells.TryGetValue(Vector3Int.RoundToInt(position), out cell);
         }
+        
+        public void RemoveCell(Vector3 position)
+        {
+            var positionInt = Vector3Int.RoundToInt(position);
+            if (Cells.ContainsKey(positionInt))
+            {
+                Cells.Remove(positionInt);
+            }
+        }
 
         public void Clear()
         {

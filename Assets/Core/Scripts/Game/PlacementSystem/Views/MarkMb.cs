@@ -1,8 +1,8 @@
-using UnityEngine;
+using PoolSystem.Alternative;
 
 namespace Game
 {
-    public class MarkMb : MonoBehaviour
+    public class MarkMb : PoolObject
     {
         public Marks Type;
     }

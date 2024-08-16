@@ -68,8 +68,12 @@ namespace Client {
                 
                 .Add(new GhostOverGridSystem())
                 .Add(new SetupChipSystem())
+                .Add(new SetupMarkLimiterSystem())
+                
+                .Add(new MakeMarkTransparentSystem())
                 
                 .Add(new CheckForWinSystem())
+                .Add(new SetupMarkLimiterCleanSystem())
                 .Add(new WinSystem())
                 .Add(new ResetTableSystem())
                 
