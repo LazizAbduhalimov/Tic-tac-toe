@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using LGrid;
@@ -23,23 +24,23 @@ namespace Game
                 foreach (var limiterEntity in _cMarkLimiterFilter.Value)
                 {
                     ref var limiters = ref _cMarkLimiterFilter.Pools.Inc1.Get(limiterEntity);
-                    MakeDisappearingMarkTransparent(ref limiters);
+                    var queue = setup.MarkType switch
+                    {
+                        Marks.X => limiters.OMarks,
+                        Marks.O => limiters.XMarks,
+                        _ => null
+                    };
+                    MakeLastObjectInQueueTransparent(queue);
                 }
             }
         }
 
-        private void MakeDisappearingMarkTransparent(ref CMarkLimiter limiters)
+        private void MakeLastObjectInQueueTransparent(Queue<GameObject> queue)
         {
-            if (limiters.XMarks.Count == 3)
+            if (queue.Count == 3)
             {
-                var xMark = limiters.XMarks.Peek();
+                var xMark = queue.Peek();
                 MakeObjectTransparent(xMark, 0.5f);
-            }
-            
-            if (limiters.OMarks.Count == 3)
-            {
-                var oMark = limiters.OMarks.Peek();
-                MakeObjectTransparent(oMark, 0.5f);
             }
         }
 

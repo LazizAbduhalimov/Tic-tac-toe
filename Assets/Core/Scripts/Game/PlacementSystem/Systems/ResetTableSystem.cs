@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using LGrid;
@@ -16,22 +18,32 @@ namespace Game
         {
             foreach (var _ in _bus.Value.GetEventBodies<EResetTable>(out _))
             {
-                foreach (var entity in _cMarkPool.Value)
-                {
-                    var markPools = _cMarkPool.Pools.Inc1.Get(entity);
-                    InactivateChildren(markPools.XPool);       
-                    InactivateChildren(markPools.OPool);      
-                    _map.Value.Clear();
-                    Debug.Log("Clear");
-                }
+                var winRow = _bus.Value.GetEventBodySingleton<EWin>().MarkRow;
+                var unnecessaryMarks = GetUnnecessaryMarks(winRow);
+                _bus.Value.NewEvent(new EFadeOutMarks(winRow, unnecessaryMarks));
+                _map.Value.Clear();
             }    
         }
 
-        private void InactivateChildren(Component component)
+        private MarkMb[] GetUnnecessaryMarks(MarkMb[] winRow)
         {
-            foreach (Transform child in component.transform)
+            var necessary = winRow.Select(m => m.gameObject).ToArray();
+            var unnecessary = new List<MarkMb>();
+            foreach (var entity in _cMarkPool.Value)
             {
-                child.gameObject.SetActive(false);
+                var markPools = _cMarkPool.Pools.Inc1.Get(entity);
+                AddUnnecessaryMarks(markPools.XPool, necessary, unnecessary);
+                AddUnnecessaryMarks(markPools.OPool, necessary, unnecessary);
+            }
+            return unnecessary.ToArray();
+        }
+
+        private void AddUnnecessaryMarks(Component pool, GameObject[] necessaryList, List<MarkMb> unnecessaryList)
+        {
+            foreach (var child in pool.gameObject.GetActiveChildren())
+            {
+                if (!necessaryList.Contains(child))
+                    unnecessaryList.Add(child.GetComponent<MarkMb>());
             }
         }
     }

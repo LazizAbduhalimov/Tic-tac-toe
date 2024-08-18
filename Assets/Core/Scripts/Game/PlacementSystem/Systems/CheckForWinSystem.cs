@@ -25,18 +25,20 @@ namespace Game
                 foreach (var neigh in _map.Value.CellsAround)
                 {
                     var position = cell.Position - neigh;
-                    if (IsCellMarkTypeAtPositionEqualTo(position, markType))
+                    if (IsCellMarkTypeAtPositionEqualTo(position, markType, out var cell2))
                     {
                         position = cell.Position - neigh * 2;
-                        if (IsCellMarkTypeAtPositionEqualTo(position, markType))
+                        if (IsCellMarkTypeAtPositionEqualTo(position, markType, out var cell3))
                         {
-                            _bus.Value.NewEventSingleton(new EWin(markType));
+                            MarkMb[] marks = {cell.Mark, cell2.Mark, cell3.Mark};
+                            _bus.Value.NewEventSingleton(new EWin(markType, marks));
                             return;
                         }
                         position = cell.Position - -neigh;
-                        if (IsCellMarkTypeAtPositionEqualTo(position, markType))
+                        if (IsCellMarkTypeAtPositionEqualTo(position, markType, out cell3))
                         {
-                            _bus.Value.NewEventSingleton(new EWin(markType));
+                            MarkMb[] marks = {cell.Mark, cell2.Mark, cell3.Mark};
+                            _bus.Value.NewEventSingleton(new EWin(markType, marks));
                             return;
                         }
                     }
@@ -44,9 +46,9 @@ namespace Game
             }
         }
 
-        private bool IsCellMarkTypeAtPositionEqualTo(Vector3 position, Marks markType)
+        private bool IsCellMarkTypeAtPositionEqualTo(Vector3 position, Marks markType, out Cell cell)
         {
-            return _map.Value.IsCellExists(position, out var cell) && cell.Mark.Type == markType;
+            return _map.Value.IsCellExists(position, out cell) && cell.Mark.Type == markType;
         }
     }
 }

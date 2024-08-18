@@ -27,20 +27,22 @@ namespace Game
 
         private void SetupObject(in ESetup setup)
         {
-            GameObject mark = null;
+            GameObject gameObject = null;
+            MarkMb mark = null;
             var go = setup.Mark;
             var position = setup.Position;
             if (_cMarkFilter.TryGetFirst(out var marksPools))
             {
-                mark = go.Type switch
+                gameObject = go.Type switch
                 {
                     Marks.X => marksPools.XPool.GetFromPool(position).gameObject,
                     Marks.O => marksPools.OPool.GetFromPool(position).gameObject,
-                    _ => mark
+                    _ => null
                 };
+                mark = gameObject.GetComponent<MarkMb>();
             }
-            var cell = _map.Value.CreateCell(Vector3Int.RoundToInt(position), go);
-            _bus.Value.NewEvent(new EOnMarkSetup(cell, go.Type, mark));
+            var cell = _map.Value.CreateCell(Vector3Int.RoundToInt(position), mark);
+            _bus.Value.NewEvent(new EOnMarkSetup(cell, go.Type, gameObject));
         }
     }
 }

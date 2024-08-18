@@ -71,11 +71,15 @@ namespace Client {
                 .Add(new SetupMarkLimiterSystem())
                 
                 .Add(new MakeMarkTransparentSystem())
+                .Add(new MarkFadeInSystem())
                 
                 .Add(new CheckForWinSystem())
                 .Add(new SetupMarkLimiterCleanSystem())
                 .Add(new WinSystem())
                 .Add(new ResetTableSystem())
+                
+                .Add(new MarkFadeOutSystem())
+                .Add(new CurrentMarkTurnShowUISystem())
                 
                 .DelHere<CMousePosition>()
                 ;
@@ -114,6 +118,8 @@ namespace Client {
                     
                     .IncSingleton<EWin>()
                     .IncSingleton<ELeftMouseClicked>()
+                
+                    .IncReplicant<EFadeOutMarks>()
                 )
                 ;
         }
