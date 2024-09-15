@@ -23,7 +23,7 @@ namespace Game
         public void Run(IEcsSystems systems)
         {
             if (!_bus.Value.HasEventSingleton<ELeftMouseClicked>()) return;
-            
+            if (!_bus.Value.HasEvents<EMouseOnGrid>()) return;
             foreach (var entity in _cTurnFilter.Value)
             {
                 ref var currentTurn = ref _cTurnFilter.Pools.Inc1.Get(entity);

@@ -12,7 +12,8 @@ namespace LGrid
         {
             var gridMb = Object.FindObjectOfType<GridMB>();
             _gridPool.NewEntity(out _).Invoke(gridMb.Grid);
-            gridMb.GridPlane.localScale = Vector3.one / 10 * 3; 
+            var gap = Vector3.one / 10;
+            gridMb.GridPlane.localScale = gap * 3 + gap / 10 * 2; 
         }
     }
 }

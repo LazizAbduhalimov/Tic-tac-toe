@@ -5,6 +5,7 @@ using Game;
 using Leopotam.EcsLite.Di;
 using Leopotam.EcsLite.ExtendedSystems;
 using LGrid;
+using LSound;
 using PoolSystem.Alternative;
 using SevenBoldPencil.EasyEvents;
 
@@ -79,7 +80,12 @@ namespace Client {
                 .Add(new ResetTableSystem())
                 
                 .Add(new MarkFadeOutSystem())
+                .Add(new SoundBridgeSystem())
+                .Add(new MusicBridgeSystem())
+                .Add(new SoundSystem())
+                .Add(new MusicSystem())
                 .Add(new CurrentMarkTurnShowUISystem())
+                .Add(new ScoreSystem())
                 
                 .DelHere<CMousePosition>()
                 ;
@@ -113,8 +119,10 @@ namespace Client {
                 .Add(_eventsBus.GetDestroyEventsSystem()
                     .IncReplicant<ESetup>()
                     .IncReplicant<EResetTable>()
+                    .IncReplicant<EMouseOnGrid>()
                     .IncReplicant<EOnMarkSetup>()
                     .IncReplicant<EOnTurnSwitched>()
+                    .IncReplicant<PlayMusic>()
                     
                     .IncSingleton<EWin>()
                     .IncSingleton<ELeftMouseClicked>()
@@ -127,7 +135,7 @@ namespace Client {
         private void InjectAllSystems(params IEcsSystems[] systems)
         {
             var map = new Map();
-            var poolService = new PoolService<PoolObject>("Pools");
+            var poolService = new PoolService("Pools");
             foreach (var system in systems)
             {
                 system.Inject(_eventsBus)
