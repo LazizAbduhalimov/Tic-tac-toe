@@ -64,10 +64,16 @@ namespace Client {
                 .Add(new ClicksSystem())
                 .Add(new MousePositionConvertSystem())
                 
-                .Add(new SwitchTurnSystem())
-                .Add(new SwitchGhostSystem())
-                
-                .Add(new GhostOverGridSystem())
+                .Add(new SwitchTurnSystem());
+            
+            if (Application.platform != RuntimePlatform.Android)
+            {
+                _updateSystems
+                    .Add(new GhostOverGridSystem())
+                    .Add(new SwitchGhostSystem());
+            }
+            
+            _updateSystems
                 .Add(new SetupChipSystem())
                 .Add(new SetupMarkLimiterSystem())
                 

@@ -8,13 +8,20 @@ using UnityEngine;
 
 namespace Game
 {
-    public class SetupChipSystem : IEcsRunSystem
+    public class SetupChipSystem : IEcsInitSystem, IEcsRunSystem
     {
-        private EcsCustomInject<EventsBus> _bus;
         private EcsCustomInject<Map> _map;
-
+        private EcsCustomInject<EventsBus> _bus;
         private EcsFilterInject<Inc<CMarkPool>> _cMarkFilter;
+        
+        private EcsPoolInject<CMarks> _cMarksPool;
         private EcsPool<ESetup> _eSetupPool;
+
+        public void Init(IEcsSystems systems)
+        {
+            var marksMb = Object.FindObjectOfType<MarksMb>();
+            _cMarksPool.NewEntity(out _).Invoke(marksMb.X, marksMb.O);
+        }
         
         public void Run(IEcsSystems systems)
         {

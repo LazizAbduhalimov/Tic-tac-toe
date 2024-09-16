@@ -12,13 +12,10 @@ namespace Game
         private EcsFilterInject<Inc<CGhost>> _cGhostOverGrid;
 
         private EcsPoolInject<CGhost> _cGhostOverGridPool;
-        private EcsPoolInject<CMarks> _cMarksPool;
 
         public void Init(IEcsSystems systems)
         {
-            var marksMb = Object.FindObjectOfType<MarksMb>();
             var placementMb = Object.FindObjectOfType<GhostMarksMb>();
-            _cMarksPool.NewEntity(out _).Invoke(marksMb.X, marksMb.O);
             _cGhostOverGridPool.NewEntity(out _)
                 .Invoke(placementMb.OPrefab, placementMb.XPrefab);
         }
