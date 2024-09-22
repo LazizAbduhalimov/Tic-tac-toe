@@ -1,3 +1,4 @@
+using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 
 public static class LeoEcsLiteExtensions
@@ -10,6 +11,12 @@ public static class LeoEcsLiteExtensions
             return true;
         }
         component = default;
+        return false;
+    }
+
+    public static bool HasEntity(this EcsFilter filter)
+    {
+        foreach (var _ in filter) return true;
         return false;
     }
 }

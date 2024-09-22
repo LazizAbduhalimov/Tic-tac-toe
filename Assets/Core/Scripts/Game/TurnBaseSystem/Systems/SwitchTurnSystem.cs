@@ -3,6 +3,7 @@ using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using LGrid;
 using SevenBoldPencil.EasyEvents;
+using UI;
 using UnityEngine;
 
 namespace Game
@@ -14,14 +15,16 @@ namespace Game
         
         private EcsFilterInject<Inc<CTurn>> _cTurnFilter;
         private EcsFilterInject<Inc<CMarks>> _cMarksFilter;
-
         private EcsFilterInject<Inc<CGrid>> _cGrid;
         private EcsFilterInject<Inc<CMousePosition>> _cMousePosition;
-        
+
+        private EcsFilterInject<Inc<EInfoButtonCloseClicked>> _eInfoCloseButtonClickedFilter;
+        private EcsFilterInject<Inc<EInfoButtonClicked>> _eInfoButtonClickedFilter;
         private EcsPoolInject<ESetup> _eSetupPool;
-        
+        private bool _inMenu;
         public void Run(IEcsSystems systems)
         {
+            if (CheckInMenu()) return;
             if (!_bus.Value.HasEventSingleton<ELeftMouseClicked>()) return;
             if (!_bus.Value.HasEvents<EMouseOnGrid>()) return;
             foreach (var entity in _cTurnFilter.Value)
@@ -46,6 +49,13 @@ namespace Game
                     }
                 }
             }    
+        }
+
+        private bool CheckInMenu()
+        {
+            foreach (var _ in _eInfoButtonClickedFilter.Value) _inMenu = true;
+            foreach (var _ in _eInfoCloseButtonClickedFilter.Value) _inMenu = false;
+            return _inMenu;
         }
 
         private void CreateMark(MarkMb mark, Vector3 position)

@@ -9,7 +9,7 @@ namespace Client
         
         public void SwitchMusic()
         {
-            SwitchMixerVolume("MusicVolume", -20);
+            SwitchMixerVolume("MusicVolume", -15);
         }
 
         public void SwitchSfx()

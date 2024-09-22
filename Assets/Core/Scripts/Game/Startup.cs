@@ -8,12 +8,13 @@ using LGrid;
 using LSound;
 using PoolSystem.Alternative;
 using SevenBoldPencil.EasyEvents;
+using UI;
 
 namespace Client {
     public sealed class Startup : MonoBehaviour 
     {
         private EcsWorld _world;        
-        private IEcsSystems _updateSystems;
+        private IEcsSystems _gameSystems;
         private IEcsSystems _fixedUpdateSystems;
         private IEcsSystems _initSystems;
         private EventsBus _eventsBus;
@@ -24,24 +25,24 @@ namespace Client {
 
             _world = new EcsWorld ();
             _initSystems = new EcsSystems(_world);
-            _updateSystems = new EcsSystems (_world);
+            _gameSystems = new EcsSystems (_world);
             _fixedUpdateSystems = new EcsSystems(_world);
             
             AddInitSystems();
             AddRunSystems();
             AddEditorSystems();
 
-            InjectAllSystems(_initSystems, _updateSystems, _fixedUpdateSystems);
+            InjectAllSystems(_initSystems, _gameSystems, _fixedUpdateSystems);
             AddEventsDestroyer();
             
             _initSystems.Init();
             _fixedUpdateSystems.Init();
-            _updateSystems.ConvertScene().Init();
+            _gameSystems.ConvertScene().Init();
         }
 
         private void Update () 
         {
-            _updateSystems?.Run ();
+            _gameSystems?.Run ();
         }
         
         private void FixedUpdate() 
@@ -55,12 +56,14 @@ namespace Client {
                 .Add(new GridInitSystem())
                 .Add(new TurnInitSystem())
                 .Add(new InitPoolsSystem())
+                .Add(new InitUIInterface())
+                .Add(new InitUIButtons())
                 ;
         }
         
         private void AddRunSystems() 
         {
-            _updateSystems
+            _gameSystems
                 .Add(new ClicksSystem())
                 .Add(new MousePositionConvertSystem())
                 
@@ -68,12 +71,12 @@ namespace Client {
             
             if (Application.platform != RuntimePlatform.Android)
             {
-                _updateSystems
+                _gameSystems
                     .Add(new GhostOverGridSystem())
                     .Add(new SwitchGhostSystem());
             }
             
-            _updateSystems
+            _gameSystems
                 .Add(new SetupChipSystem())
                 .Add(new SetupMarkLimiterSystem())
                 
@@ -94,13 +97,18 @@ namespace Client {
                 .Add(new ScoreSystem())
                 
                 .DelHere<CMousePosition>()
+                .DelHere<EClearScoreButtonClicked>()
+                .DelHere<EInfoButtonClicked>()
+                .DelHere<EInfoButtonCloseClicked>()
+                .DelHere<EMusicButtonClicked>()
+                .DelHere<ESFXButtonClicked>()
                 ;
         }
 
         private void OnDestroy () 
         {
-            _updateSystems?.Destroy ();
-            _updateSystems = null;
+            _gameSystems?.Destroy ();
+            _gameSystems = null;
 
             _fixedUpdateSystems?.Destroy();
             _fixedUpdateSystems = null;
@@ -121,7 +129,7 @@ namespace Client {
 
         private void AddEventsDestroyer()
         {
-            _updateSystems
+            _gameSystems
                 .Add(_eventsBus.GetDestroyEventsSystem()
                     .IncReplicant<ESetup>()
                     .IncReplicant<EResetTable>()
