@@ -24,7 +24,7 @@ public class CameraFieldViewChanger : MonoBehaviour
         var defaultView = 16f / 9f;
         var aspectRatio = Screen.width > Screen.height ? (float)Screen.width / Screen.height : (float)Screen.height / Screen.width;
 
-        var multiplier = Mathf.Clamp(aspectRatio / defaultView, 0.8f, 1.2f);
+        var multiplier = Mathf.Clamp(aspectRatio / defaultView, 0.8f, 1.3f);
         
         _portraitFieldOfView *= multiplier;
         _landscapeFieldOfView *= multiplier;
@@ -33,8 +33,8 @@ public class CameraFieldViewChanger : MonoBehaviour
     private void SetRotationView()
     {
         if (Screen.width > Screen.height)
-            _camera.fieldOfView = _landscapeFieldOfView;
+            _camera.orthographicSize = _landscapeFieldOfView;
         else
-            _camera.fieldOfView = _portraitFieldOfView;
+            _camera.orthographicSize = _portraitFieldOfView;
     }
 }

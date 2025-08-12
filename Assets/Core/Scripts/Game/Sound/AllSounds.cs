@@ -7,6 +7,7 @@ namespace Game
     {
         public AudioClip[] SetupX;
         public AudioClip[] SetupO;
+        public AudioClip Win;
         
         [Space(5f)] 
         public AudioClip[] Musics;

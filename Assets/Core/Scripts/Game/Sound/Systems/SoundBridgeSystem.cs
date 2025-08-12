@@ -33,6 +33,11 @@ namespace Game
                 };
                 _bus.Value.NewEvent(new PlaySound(clip, _allSounds.SfxMixerGroup, Vector3.zero));
             }
+
+            if (_bus.Value.HasEventSingleton<EWin>())
+            {
+                _bus.Value.NewEvent(new PlaySound(_allSounds.Win, _allSounds.SfxMixerGroup, Vector3.zero));
+            }
         }
     }
 }
