@@ -1,4 +1,4 @@
-namespace Client
+namespace Game
 {
     public class Utilities
     {

@@ -10,7 +10,7 @@ using PoolSystem.Alternative;
 using SevenBoldPencil.EasyEvents;
 using UI;
 
-namespace Client {
+namespace Game {
     public sealed class Startup : MonoBehaviour 
     {
         private EcsWorld _world;        

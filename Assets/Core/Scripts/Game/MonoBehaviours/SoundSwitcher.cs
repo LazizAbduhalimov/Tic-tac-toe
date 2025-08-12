@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Client
+namespace Game
 {
     public class SoundSwitcher : MonoBehaviour
     {

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Client
+namespace Game
 {
     [RequireComponent(typeof(Image))]
     public class SpriteSwitcher : MonoBehaviour

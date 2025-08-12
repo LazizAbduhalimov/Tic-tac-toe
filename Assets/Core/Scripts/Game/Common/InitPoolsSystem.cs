@@ -3,7 +3,7 @@ using Leopotam.EcsLite;
 using Leopotam.EcsLite.Di;
 using UnityEngine;
 
-namespace Client
+namespace Game
 {
     public class InitPoolsSystem : IEcsInitSystem
     {
